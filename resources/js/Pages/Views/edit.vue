@@ -11,12 +11,12 @@
                     <myForm :form_data="form_data" />
                 </v-card-text>
                 <v-card-actions>
-                    <v-btn variant="outlined" color="error" @click="close">
-                        Close
+                    <v-btn variant="outlined" color="red" @click="close">
+                        <v-icon>mdi-close-box-multiple</v-icon> Close
                     </v-btn>
                     <v-spacer></v-spacer>
-                    <v-btn variant="outlined" color="primary" @click="submit">
-                        Submit
+                    <v-btn variant="outlined" color="info" @click="submit">
+                        <v-icon>mdi-checkbox-marked</v-icon> Submit
                     </v-btn>
                 </v-card-actions>
             </v-card>

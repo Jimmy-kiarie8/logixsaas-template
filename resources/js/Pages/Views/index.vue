@@ -1,36 +1,24 @@
 <template>
-    <MainLayout :title="title" :modelRoute="modelRoute" :rail="false" ref="snackBarModal">
-
+    <MainLayout title="Order Management" :rail="false" ref="snackBarModal">
 
         <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
-            <v-data-table :headers="headers" :items="table_data.data" :sort-by="[{ key: 'name', order: 'asc' }]"
-                class="elevation-2" :search="search" :loading="loading">
+            <v-data-table :headers="headers" :items="data.data" :sort-by="[{ key: 'name', order: 'asc' }]"
+                class="elevation-2" :search="search">
                 <template v-slot:top>
                     <v-toolbar flat>
                         <v-toolbar-title>{{ title }} Management</v-toolbar-title>
                         <v-divider class="mx-4" inset vertical></v-divider>
                         <v-spacer></v-spacer>
-                        <v-tooltip location="bottom">
-                            <template v-slot:activator="{ props }">
-                                <v-btn icon v-bind="props" @click="refresh()">
-                                    <v-icon color="info">
-                                        mdi-refresh
-                                    </v-icon>
-                                </v-btn>
-                            </template>
-                            <span>View geofences</span>
-                        </v-tooltip>
-
-                        <v-btn prepend-icon="mdi-plus-circle" variant="outlined" @click="openCreate('geocoder')"
-                            color="info" v-if="modelRoute !== 'geofences'">
-                            Add {{ title }}
+                        <v-btn prepend-icon="mdi-plus" variant="outlined" @click="openCreate" color="info">
+                            Create {{ title }}
                         </v-btn>
-
-
-                        <v-btn prepend-icon="mdi-plus-circle" variant="tonal" @click="goTo('geocoder')" color="info" rounded
-                            v-else>
-                            Add {{ title }}
+                        <div style="width: 10px;"></div>
+                        <v-btn prepend-icon="mdi-upload" variant="outlined" @click="uploadItem" color="info" v-if="upload">
+                            Upload
                         </v-btn>
+                        <!-- <myCreate :form_data="form_data" :title="title" :modelRoute="modelRoute" ref="createModal" /> -->
+
+
                     </v-toolbar>
                     <v-text-field v-model="search" append-icon="mdi-magnify" label="Search" single-line
                         hide-details></v-text-field>
@@ -40,8 +28,8 @@
 
                         <v-tooltip location="bottom">
                             <template v-slot:activator="{ props }">
-                                <v-btn icon v-bind="props" @click="openEdit(item.id)" variant="text" color="info">
-                                    <v-icon>
+                                <v-btn icon v-bind="props" @click="openEdit(item.id)" variant="text">
+                                    <v-icon color="info">
                                         mdi-pencil
                                     </v-icon>
                                 </v-btn>
@@ -50,23 +38,13 @@
                         </v-tooltip>
                         <v-tooltip location="bottom">
                             <template v-slot:activator="{ props }">
-                                <v-btn icon v-bind="props" @click="deleteItem(item)" variant="text" color="red">
-                                    <v-icon>
+                                <v-btn icon v-bind="props" @click="deleteItem(item)">
+                                    <v-icon color="red">
                                         mdi-delete
                                     </v-icon>
                                 </v-btn>
                             </template>
-                            <span>View geofences</span>
-                        </v-tooltip>
-                        <v-tooltip location="bottom" v-if="modelRoute === 'geofences'">
-                            <template v-slot:activator="{ props }">
-                                <v-btn icon v-bind="props" @click="geoFence(item.id)" variant="text" color="success">
-                                    <v-icon>
-                                        mdi-map-marker-check
-                                    </v-icon>
-                                </v-btn>
-                            </template>
-                            <span>View geofences</span>
+                            <span>Delete</span>
                         </v-tooltip>
                     </div>
                 </template>
@@ -81,8 +59,30 @@
                 </template>
             </v-data-table>
         </div>
-        <clientEdit ref="editModal" :modelRoute="modelRoute" :title="title" />
-        <myCreate ref="createModal" :title="title" :modelRoute="modelRoute" :form_data="form_data" />
+        <componentEdit ref="editModal" :modelRoute="modelRoute" :title="title" />
+        <myUpload ref="uploadModal" :modelRoute="modelRoute" :title="title" />
+        <myCreate ref="createModal" :form_data="form_data" :modelRoute="modelRoute" :title="title" />
+
+
+        <v-dialog v-model="dialogDelete" max-width="400px">
+            <v-card>
+                <v-card-title class="text-h5">Warning!</v-card-title>
+                <v-divider></v-divider>
+                <v-card-text>
+                    Are you sure you want to delete this item?
+                </v-card-text>
+                <v-divider></v-divider>
+                <v-card-actions>
+                    <v-btn color="red-darken-1" variant="tonal" @click="close">
+                        <v-icon>mdi-close-box</v-icon>Cancel
+                    </v-btn>
+                    <v-spacer></v-spacer>
+                    <v-btn color="info" variant="tonal" @click="deleteItemConfirm">
+                        <v-icon>mdi-checkbox-marked</v-icon>OK
+                    </v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
     </MainLayout>
 </template>
 
@@ -91,7 +91,11 @@ import MainLayout from '@/Layouts/MainLayout.vue';
 import { router } from '@inertiajs/vue3'
 
 import myCreate from './create.vue'
-import clientEdit from './edit.vue'
+import componentEdit from './edit.vue';
+import myUpload from './upload.vue';
+import {
+    VDataTable,
+} from "vuetify/labs/VDataTable";
 import axios from 'axios';
 export default {
     props: {
@@ -99,39 +103,27 @@ export default {
         form_data: Object,
         headers: Object,
         modelRoute: String,
-        title: String
+        title: String,
+        upload: Boolean
     },
     components: {
-        MainLayout, myCreate, clientEdit
+        MainLayout, myCreate, componentEdit, VDataTable, myUpload
     },
     data() {
         return {
             search: '',
             page: 1,
+            dialogDelete: false,
             itemsPerPage: 5,
-            table_data: {},
-            loading: false
+            editedIndex: -1,
+            editedItem: {}
         }
     },
     methods: {
         goTo(route) {
             router.visit(route)
         },
-        refresh() {
-            this.loading = true
-            axios.get(`${this.modelRoute}?json=${true}`).then((res) => {
-                this.loading = false
-                this.table_data = res.data
-
-                console.log("🚀 ~ axios.get ~ res:", res)
-            }).catch((error) => {
-                this.loading = false
-                console.log("🚀 ~ axios.get ~ error:", error)
-
-            })
-        },
         openEdit(data) {
-            console.log("🚀 ~ openEdit ~ data:", data)
             this.$refs.editModal.show(data)
             // this.$emit('CallEvent', data)
         },
@@ -139,20 +131,50 @@ export default {
             this.$refs.createModal.show()
             // this.$emit('CallEvent', data)
         },
-        geoFence(route) {
-            router.visit(`/geofences/${route}`)
-        }
+        deleteItem(item) {
+
+            this.editedIndex = this.data.data.indexOf(item)
+            this.editedItem = Object.assign({}, item)
+            this.dialogDelete = true
+
+        },
+        deleteItemConfirm() {
+            axios.delete(`${this.modelRoute}/${this.editedItem.id}`).then((res) => {
+                console.log("🚀 ~ axios.delete ~ res:", res)
+                this.dialogDelete = true
+                this.data.data.splice(this.editedIndex, 1)
+                this.close()
+            }).catch((error) => {
+                console.log("🚀 ~ axios.delete ~ error:", error)
+
+            })
+
+
+        },
+        close() {
+            this.dialogDelete = false
+        },
+
+        uploadItem() {
+            this.$refs.uploadModal.show()
+        },
     },
 
     computed: {
         pageCount() {
             return Math.ceil(this.data.data.length / this.itemsPerPage)
         },
-    },
 
-    mounted() {
-        this.table_data = this.data
-    }
+        // canEdit() {
+        //     const permission = 'Edit ' + this.title;
+        //     if (this.$page.props.auth && this.$page.props.auth.user) {
+        //         const permissions = this.$page.props.auth.user.can;
+        //         // return permissions
+        //         return permissions[`${permission}`];
+        //     }
+        //     return false;
+        // }
+    },
 }
 </script>
 
