@@ -7,15 +7,8 @@
                     <v-select clearable chips label="Report" :items="reports" variant="outlined"  item-title="label" item-value="value" v-model="form.report"></v-select>
                 </v-col>
                 <v-col cols="12" sm="3">
-                    <v-select clearable chips label="Agent" :items="sale_officer" variant="outlined" item-title="name" item-value="id" v-model="form.agent_id"></v-select>
-                </v-col>
-                <v-col cols="12" sm="3">
                     <v-select clearable chips label="Clients" :items="clients" variant="outlined" item-title="name" item-value="id" v-model="form.client_id"></v-select>
                 </v-col>
-                <v-col cols="12" sm="3">
-                    <v-select clearable chips label="Projects" :items="projects" variant="outlined" item-title="name" item-value="id" v-model="form.project_id"></v-select>
-                </v-col>
-
                 <v-col cols="12" sm="3">
                     <v-text-field clearable v-model="form.start_date" label="Start Date" variant="outlined" type="date"></v-text-field>
                 </v-col>
@@ -62,13 +55,11 @@ import MainLayout from '@/Layouts/MainLayout.vue';
 import axios from 'axios';
 export default {
         props: {
-            sale_officer: Object,
             clients: Object,
-            projects: Object,
             // headers: Object,
         },
     components: {
-        MainLayout,VDataTable
+        MainLayout
     },
     data () {
       return {

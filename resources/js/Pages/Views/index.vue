@@ -93,9 +93,6 @@ import { router } from '@inertiajs/vue3'
 import myCreate from './create.vue'
 import componentEdit from './edit.vue';
 import myUpload from './upload.vue';
-import {
-    VDataTable,
-} from "vuetify/labs/VDataTable";
 import axios from 'axios';
 export default {
     props: {
@@ -107,7 +104,7 @@ export default {
         upload: Boolean
     },
     components: {
-        MainLayout, myCreate, componentEdit, VDataTable, myUpload
+        MainLayout, myCreate, componentEdit, myUpload
     },
     data() {
         return {

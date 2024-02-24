@@ -5,7 +5,6 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
 use App\Models\Tickets\Ticket;
-use App\Traits\CallCenterAnalytics;
 use Carbon\Carbon;
 use Coderflex\LaravelTicket\Concerns\HasTickets;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -24,7 +23,6 @@ class User extends Authenticatable
     use HasProfilePhoto;
     use Notifiable;
     use TwoFactorAuthenticatable;
-    use CallCenterAnalytics;
     use HasRoles;
     use HasTickets;
 

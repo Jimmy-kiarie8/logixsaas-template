@@ -88,20 +88,6 @@ export default {
                     subMenu: []
                 },
                 {
-                    text: 'Drivers',
-                    link: '/drivers',
-                    icon: 'mdi-bike',
-                    hasSub: false,
-                    subMenu: []
-                },
-                {
-                    text: 'Drivers Group',
-                    link: '/driver_groups',
-                    icon: 'mdi-account-group',
-                    hasSub: false,
-                    subMenu: []
-                },
-                {
                     text: 'Users',
                     link: '/users',
                     icon: 'mdi-badge-account-alert-outline',
@@ -116,13 +102,6 @@ export default {
                     subMenu: []
                 },
                 {
-                    text: 'Geofence',
-                    link: '/geofences',
-                    icon: 'mdi-map-marker-radius',
-                    hasSub: false,
-                    subMenu: []
-                },
-                {
                     text: 'Sales Manager',
                     link: '#',
                     icon: 'mdi-bag-checked',
@@ -133,21 +112,7 @@ export default {
                             icon: 'mdi-book',
                             hasSub: false,
                             subMenu: []
-                        },
-                        {
-                            text: 'Payments',
-                            link: '/payment',
-                            icon: 'mdi-cash-multiple',
-                            hasSub: false,
-                            subMenu: []
-                        },
-                        {
-                            text: 'Sales',
-                            link: '/sales',
-                            icon: 'mdi-cart',
-                            hasSub: false,
-                            subMenu: []
-                        },
+                        }
                     ],
                     hasSub: true
                 },

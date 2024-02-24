@@ -44,6 +44,7 @@ class UserController extends Controller
             'headers' => $headers,
             'title' => 'Users',
             'modelRoute' => 'users',
+            'upload' => false
         ]);
     }
 
