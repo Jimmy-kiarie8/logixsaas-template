@@ -1,7 +1,11 @@
 <script setup>
-import { Head, useForm, Link } from '@inertiajs/vue3';
+import { Head, useForm } from '@inertiajs/vue3';
+import AuthenticationCard from '@/Components/AuthenticationCard.vue';
+import AuthenticationCardLogo from '@/Components/AuthenticationCardLogo.vue';
 import InputError from '@/Components/InputError.vue';
-import { ref } from 'vue';
+import InputLabel from '@/Components/InputLabel.vue';
+import PrimaryButton from '@/Components/PrimaryButton.vue';
+import TextInput from '@/Components/TextInput.vue';
 
 defineProps({
     status: String,
@@ -11,53 +15,12 @@ const form = useForm({
     email: '',
 });
 
-let loading = ref(false)
-
 const submit = () => {
     form.post(route('password.email'));
 };
 </script>
 
 <template>
-
-<form @submit.prevent="submit">
-
-
-<v-card class="mx-auto" elevation="1" max-width="500">
-  <v-card-title class="py-5 font-weight-black">Securely manage your orders</v-card-title>
-
-  <v-card-text>
-    To continue, enter a code sent to your phone or use the Google Authenticator app. If you can't access this, use the recovery code.
-  </v-card-text>
-
-  <v-card-text>
-
-    <div v-if="status" style="color: #49c170">
-        {{ status }}
-    </div>
-    <br />
-    <v-text-field id="code" label="Enter Email" v-model="form.email" type="text" inputmode="numeric" variant="outlined" class="mt-1 block w-full" autofocus autocomplete="email" density="compact" placeholder="" prepend-inner-icon="mdi-email"></v-text-field>
-    <InputError class="mt-2" :message="form.errors.email" style="color: #d71818" />
-    <br />
-
-    <v-btn :disabled="form.processing" :loading="form.processing" block class="text-none mb-4" color="indigo-darken-3" size="x-large" variant="flat" @click="submit">
-      Reset
-    </v-btn>
-
-  </v-card-text>
-
-  <v-card-text class="text-center">
-          
-          <Link href="/login" class="text-blue text-decoration-none">
-            
-            Login up now <v-icon icon="mdi-chevron-right"></v-icon>
-          </Link>
-        </v-card-text>
-</v-card>
-</form>
-
-
-<!-- 
     <Head title="Forgot Password" />
 
     <AuthenticationCard>
@@ -94,5 +57,5 @@ const submit = () => {
                 </PrimaryButton>
             </div>
         </form>
-    </AuthenticationCard> -->
+    </AuthenticationCard>
 </template>

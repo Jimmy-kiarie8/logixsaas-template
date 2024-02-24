@@ -21,13 +21,7 @@ return new class extends Migration
             $table->string('phone')->nullable();
             $table->string('address')->nullable();
             $table->string('city')->nullable();
-            $table->string('agent_sip')->default(false);
-            $table->string('agent_token')->nullable();
-            $table->boolean('call_status')->default(false);
             $table->boolean('active')->default(true);
-            $table->boolean('on_call')->default(false);
-            $table->boolean('can_receive_call')->default(false);
-            $table->boolean('can_make_call')->default(false);
 
             $table->rememberToken();
             $table->foreignId('current_team_id')->nullable();

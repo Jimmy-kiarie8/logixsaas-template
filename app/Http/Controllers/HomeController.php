@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Imports\ModelImport;
 use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Product;
@@ -11,6 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 use Kutia\Larafirebase\Facades\Larafirebase;
+use Maatwebsite\Excel\Facades\Excel;
 
 class HomeController extends Controller
 {
@@ -95,5 +97,35 @@ class HomeController extends Controller
 
         $trans = new DataTransformService;
         return $trans->data_edit_transform($jsonFile, $driver_groups);
+    }
+
+
+    public function product_upload()
+    {
+        // Log::info(print_r(request()->all(), true));
+
+        // dd(request()->file('file'));
+        $response = Excel::toArray(new ModelImport, request()->file('file'));
+
+        $data =  $response[0];
+
+        // Transform data
+
+    }
+
+    public function image_upload(Request $request, $id)
+    {
+
+
+        if ($request->hasFile('file')) {
+
+
+            $image = $request->file('file');
+            $image_path = $image->store('folder', 'public');
+            // Save Image
+        } else {
+        }
+
+        return redirect()->back()->with('message', 'Image uploaded');
     }
 }

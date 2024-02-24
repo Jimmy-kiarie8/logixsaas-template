@@ -18,8 +18,8 @@ const submit = () => {
     form.transform(data => ({
         ...data,
         remember: form.remember ? 'on' : '',
-    })).post(route('login'), {
-        onFinish: () => form.reset('password'),
+    })).post(route('client.login'), {
+        onFinish: () => window.location.href = '/client/dashboard',
     });
 };
 </script>
