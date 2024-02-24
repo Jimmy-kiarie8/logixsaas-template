@@ -1,0 +1,54 @@
+[
+    {
+        "label": "Name",
+        "model": "name",
+        "value": "Yes",
+        "type": "radio",
+        "display": true,
+        "table_display": true,
+        "col": 6,
+        "items": [
+            "Yes",
+            "No"
+        ]
+    },
+    {
+        "label": "Value Type",
+        "model": "value_type",
+        "value": "Yes",
+        "type": "radio",
+        "display": true,
+        "table_display": true,
+        "col": 6,
+        "items": [
+            "Yes",
+            "No"
+        ]
+    },
+    {
+        "label": "Value",
+        "model": "value",
+        "value": "Yes",
+        "type": "radio",
+        "display": true,
+        "table_display": true,
+        "col": 6,
+        "items": [
+            "Yes",
+            "No"
+        ]
+    },
+    {
+        "label": "Description",
+        "model": "description",
+        "value": "",
+        "type": "time",
+        "display": true,
+        "table_display": true,
+        "col": 6,
+        "items": [
+            "Yes",
+            "No"
+        ]
+    }
+]

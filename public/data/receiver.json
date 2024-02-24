@@ -1,0 +1,77 @@
+[
+    {
+        "label": "Receiver Name",
+        "model": "name",
+        "value": "",
+        "type": "text",
+        "display": true,
+        "table_display": true,
+        "col": 6,
+        "multiple": false,
+        "items": []
+    },
+    {
+        "label": "Receiver Phone",
+        "model": "phone",
+        "value": "",
+        "type": "text",
+        "display": true,
+        "table_display": true,
+        "col": 6,
+        "multiple": false,
+        "items": []
+    },
+    {
+        "label": "Receiver Address",
+        "model": "address",
+        "value": "",
+        "type": "text",
+        "display": true,
+        "table_display": true,
+        "col": 6,
+        "multiple": false,
+        "items": []
+    },
+    {
+        "label": "Receiver City",
+        "model": "city",
+        "value": "",
+        "type": "text",
+        "display": true,
+        "table_display": true,
+        "col": 6,
+        "multiple": false,
+        "items": []
+    },
+    {
+        "label": "Receiver Id",
+        "model": "id_number",
+        "value": "",
+        "type": "text",
+        "display": true,
+        "table_display": true,
+        "col": 6,
+        "multiple": false,
+        "items": []
+    },
+    {
+        "label": "Latitude",
+        "model": "latitude",
+        "value": "",
+        "type": "text",
+        "display": false,
+        "table_display": false,
+        "col": 6,
+        "items": []
+    },
+    {
+        "label": "Longitude",
+        "model": "longitude",
+        "value": "",
+        "type": "text",
+        "display": false,
+        "table_display": false,
+        "col": 6,
+        "items": []
+    }
+]

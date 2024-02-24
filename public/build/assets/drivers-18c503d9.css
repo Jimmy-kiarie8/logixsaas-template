@@ -1,0 +1,1 @@
+.map-container{height:90vh}.sender-blinker{background-color:#1e88e5;border-radius:50%;width:20px;height:20px;border:2px solid white;box-shadow:0 0 #1e88e566;animation:pulse 2s infinite}@keyframes pulse{0%{box-shadow:0 0 #1e88e566}70%{box-shadow:0 0 0 10px #1e88e500}to{box-shadow:0 0 #1e88e500}}

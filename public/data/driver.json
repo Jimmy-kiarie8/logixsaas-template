@@ -1,0 +1,123 @@
+[
+    {
+        "label": "Name",
+        "value": "",
+        "model": "name",
+        "type": "text",
+        "display": true,
+        "table_display": true,
+        "col": 6,
+        "items": []
+    },
+    {
+        "label": "User Name",
+        "value": "",
+        "model": "username",
+        "type": "text",
+        "display": true,
+        "table_display": true,
+        "col": 6,
+        "items": []
+    },
+    {
+        "label": "Email",
+        "value": "",
+        "model": "email",
+        "type": "text",
+        "display": true,
+        "table_display": true,
+        "col": 6,
+        "items": []
+    },
+    {
+        "label": "Phone Number",
+        "value": "",
+        "model": "phone_number",
+        "type": "text",
+        "display": true,
+        "table_display": true,
+        "col": 6,
+        "items": []
+    },
+    {
+        "label": "License Number",
+        "value": "",
+        "model": "license_number",
+        "type": "text",
+        "display": true,
+        "table_display": true,
+        "col": 6,
+        "items": []
+    },
+    {
+        "label": "Vehicle Type",
+        "value": "",
+        "model": "vehicle_type",
+        "type": "text",
+        "display": true,
+        "table_display": true,
+        "col": 6,
+        "items": []
+    },
+    {
+        "label": "Vehicle Registration Number",
+        "value": "",
+        "model": "vehicle_registration_number",
+        "type": "text",
+        "display": true,
+        "table_display": true,
+        "col": 6,
+        "items": []
+    },
+    {
+        "label": "Availability Status",
+        "value": "",
+        "model": "availability_status",
+        "type": "radio",
+        "display": false,
+        "table_display": true,
+        "col": 6,
+        "items": ["Active", "In-active"]
+    },
+    {
+        "label": "Active",
+        "value": "Yes",
+        "model": "active",
+        "type": "radio",
+        "display": false,
+        "table_display": true,
+        "col": 6,
+        "items": ["Yes", "No"]
+    },
+    {
+        "label": "Current Location",
+        "value": "",
+        "model": "current_location",
+        "type": "text",
+        "display": false,
+        "table_display": true,
+        "col": 6,
+        "items": []
+    },
+    {
+        "label": "Driver group",
+        "value": null,
+        "model": "driver_group_id",
+        "type": "select",
+        "display": true,
+        "multiple": true,
+        "table_display": true,
+        "col": 6,
+        "items": []
+    },
+    {
+        "label": "Active",
+        "value": "",
+        "model": "active",
+        "type": "text",
+        "display": false,
+        "table_display": true,
+        "col": 6,
+        "items": []
+    }
+]

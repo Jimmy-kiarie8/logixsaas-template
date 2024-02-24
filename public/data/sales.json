@@ -1,0 +1,131 @@
+[
+    {
+        "label": "Order Number",
+        "model": "order_no",
+        "value": "",
+        "type": "text",
+        "display": false,
+        "table_display": true,
+        "col": 6,
+        "items": []
+    },
+    {
+        "label": "Amount",
+        "model": "amount",
+        "value": 0,
+        "type": "text",
+        "display": false,
+        "table_display": false,
+        "col": 6,
+        "items": []
+    },
+    {
+        "label": "Delivery Date",
+        "model": "delivery_date",
+        "value": "",
+        "type": "date",
+        "display": true,
+        "table_display": true,
+        "col": 6,
+        "items": []
+    },
+    {
+        "label": "Distance",
+        "model": "distance",
+        "value": "",
+        "type": "text",
+        "display": false,
+        "table_display": true,
+        "col": 6,
+        "items": []
+    },
+    {
+        "label": "Paid",
+        "model": "paid",
+        "value": "No",
+        "type": "radio",
+        "display": false,
+        "table_display": true,
+        "col": 6,
+        "items": ["Yes", "No"]
+    },
+    {
+        "label": "Weight",
+        "model": "weight",
+        "value": "",
+        "type": "text",
+        "display": true,
+        "table_display": true,
+        "col": 6,
+        "items": []
+    },
+    {
+        "label": "Door Delivery",
+        "model": "door_delivery",
+        "value": "No",
+        "type": "radio",
+        "display": true,
+        "table_display": true,
+        "col": 6,
+        "items": ["Yes", "No"]
+    },
+    {
+        "label": "Delivery Status",
+        "model": "delivery_status",
+        "value": null,
+        "type": "select",
+        "display": true,
+        "table_display": true,
+        "col": 6,
+        "items": [
+            "New",
+            "Received",
+            "Processing",
+            "Confirmed",
+            "In Transit",
+            "Delivered",
+            "Returned",
+            "Cancelled"
+        ]
+    },
+    {
+        "label": "Shipping Charges",
+        "model": "shipping_charges",
+        "value": "",
+        "type": "text",
+        "display": false,
+        "table_display": true,
+        "col": 6,
+        "items": []
+    },
+    {
+        "label": "Channel",
+        "model": "channel",
+        "value": "",
+        "type": "text",
+        "display": false,
+        "table_display": true,
+        "col": 6,
+        "items": []
+    },
+    {
+        "label": "Driver",
+        "model": "driver_id",
+        "value": "",
+        "type": "text",
+        "display": false,
+        "table_display": true,
+        "col": 6,
+        "items": []
+    },
+    {
+        "label": "Notes",
+        "model": "notes",
+        "value": "",
+        "type": "long_text",
+        "display": true,
+        "table_display": true,
+        "col": 12,
+        "items": []
+    }
+]

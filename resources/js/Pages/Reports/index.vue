@@ -1,0 +1,133 @@
+<template>
+    <MainLayout title="Order Management">
+        <v-card>
+
+            <v-row no-gutters>
+                <v-col cols="12" sm="3">
+                    <v-select clearable chips label="Report" :items="reports" variant="outlined"  item-title="label" item-value="value" v-model="form.report"></v-select>
+                </v-col>
+                <v-col cols="12" sm="3">
+                    <v-select clearable chips label="Agent" :items="sale_officer" variant="outlined" item-title="name" item-value="id" v-model="form.agent_id"></v-select>
+                </v-col>
+                <v-col cols="12" sm="3">
+                    <v-select clearable chips label="Clients" :items="clients" variant="outlined" item-title="name" item-value="id" v-model="form.client_id"></v-select>
+                </v-col>
+                <v-col cols="12" sm="3">
+                    <v-select clearable chips label="Projects" :items="projects" variant="outlined" item-title="name" item-value="id" v-model="form.project_id"></v-select>
+                </v-col>
+
+                <v-col cols="12" sm="3">
+                    <v-text-field clearable v-model="form.start_date" label="Start Date" variant="outlined" type="date"></v-text-field>
+                </v-col>
+                <v-col cols="12" sm="3">
+                    <v-text-field clearable v-model="form.end_date" label="End Date" variant="outlined" type="date"></v-text-field>
+                </v-col>
+
+                <v-btn color="info" @click="getReport">Filer</v-btn>
+            </v-row>
+
+            <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
+            <v-data-table :headers="headers" :items="data.data" :sort-by="[{ key: 'product_name', order: 'asc' }]" class="elevation-2" :search="search">
+                    <template v-slot:top>
+                    <v-toolbar flat>
+                        <v-toolbar-title>Order Management</v-toolbar-title>
+                        <v-divider class="mx-4" inset vertical></v-divider>
+                        <v-spacer></v-spacer>
+
+                    </v-toolbar>
+                        <v-text-field v-model="search" append-icon="mdi-magnify" label="Search" single-line hide-details></v-text-field>
+                    </template>
+                    <template v-slot:item.actions="{ item }">
+                    <v-icon size="small" class="me-2" @click="editItem(item)">
+                        mdi-pencil
+                    </v-icon>
+                    <v-icon size="small" @click="deleteItem(item)">
+                        mdi-delete
+                    </v-icon>
+                    </template>
+
+                    <template v-slot:item.profile_photo_url="{ value }">
+                        <v-avatar :image="value"></v-avatar>
+                    </template>
+
+                </v-data-table>
+            </div>
+        </v-card>
+    </MainLayout>
+
+</template>
+
+<script>
+import MainLayout from '@/Layouts/MainLayout.vue';
+import axios from 'axios';
+export default {
+        props: {
+            sale_officer: Object,
+            clients: Object,
+            projects: Object,
+            // headers: Object,
+        },
+    components: {
+        MainLayout,VDataTable
+    },
+    data () {
+      return {
+        form: {
+            start_date: null,
+            end_date: null,
+            agent_id: null,
+            report: null
+        },
+        search: '',
+        page: 1,
+        itemsPerPage: 5,
+        data: [],
+        headers: [],
+        reports: [
+            {label: 'Project Overview', value: 'projectOverview'},
+            {label: 'Plot Status', value: 'plotStatus'},
+            {label: 'Sales Report', value: 'salesReport'},
+            {label: 'Payment Report', value: 'paymentReport'},
+        ]
+      }
+    },
+    methods: {
+        getReport() {
+            if (!this.form.report) {
+                return;
+            }
+            axios.post(this.form.report, this.form).then((res) => {
+                console.log("🚀 ~ file: index.vue:58 ~ axios.get ~ res:", res.data.headers)
+                this.data = res.data.data
+                this.headers = res.data.headers
+
+            })
+        }
+    },
+
+    computed: {
+      pageCount () {
+        return Math.ceil(this.data.data.length / this.itemsPerPage)
+      },
+    },
+  }
+</script>
+
+
+<style scoped>
+#tooltip {
+    font-style: inherit;
+    font-weight: inherit;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    max-width: 180px;
+    overflow: hidden;
+    display: block;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+}
+
+.v-card--variant-elevated {
+    padding: 30px
+}
+</style>
