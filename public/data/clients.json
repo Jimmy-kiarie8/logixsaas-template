@@ -1,0 +1,42 @@
+[
+    {
+        "label": "Name",
+        "value": "",
+        "model": "name",
+        "type": "text",
+        "display": true,
+        "table_display": true,
+        "col": 6,
+        "items": []
+    },
+    {
+        "label": "Email",
+        "value": "",
+        "model": "email",
+        "type": "text",
+        "display": true,
+        "table_display": true,
+        "col": 6,
+        "items": []
+    },
+    {
+        "label": "Phone No",
+        "value": "",
+        "model": "Phone",
+        "type": "text",
+        "display": true,
+        "table_display": true,
+        "col": 6,
+        "items": []
+    },
+    {
+        "label": "Address",
+        "value": "",
+        "model": "address",
+        "type": "text",
+        "display": true,
+        "table_display": true,
+        "col": 6,
+        "items": []
+    }
+]

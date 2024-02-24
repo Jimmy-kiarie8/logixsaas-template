@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ClientController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ReportController;
@@ -27,6 +28,7 @@ Route::middleware([
     Route::get('/', [DashboardController::class, 'analytics']);
 
     Route::resource('users', UserController::class);
+    Route::resource('clients', ClientController::class);
     Route::resource('settings', SettingController::class);
     Route::resource('reports', ReportController::class);
 });
