@@ -20,14 +20,14 @@ class DashboardController extends Controller
 
     public function index()
     {
-        $getTotalSales = $this->getTotalSales();
-        $getTotalRevenue = $this->getTotalRevenue();
-        $getAverageDeliveryTime = $this->getAverageDeliveryTime();
-        $getActiveDriversCount = $this->getActiveDriversCount();
-        $getTotalDistanceCovered = $this->getTotalDistanceCovered();
-        $getSalesByDeliveryStatus = $this->getSalesByDeliveryStatus();
-        $getDeliveryStatusCounts = $this->getDeliveryStatusCounts();
-        $getSalesOverTime = $this->getSalesOverTime();
+        // $getTotalSales = $this->getTotalSales();
+        // $getTotalRevenue = $this->getTotalRevenue();
+        // $getAverageDeliveryTime = $this->getAverageDeliveryTime();
+        // $getActiveDriversCount = $this->getActiveDriversCount();
+        // $getTotalDistanceCovered = $this->getTotalDistanceCovered();
+        // $getSalesByDeliveryStatus = $this->getSalesByDeliveryStatus();
+        // $getDeliveryStatusCounts = $this->getDeliveryStatusCounts();
+        // $getSalesOverTime = $this->getSalesOverTime();
 
         return Inertia::render('Dashboard/index', [
         ]);
@@ -36,6 +36,10 @@ class DashboardController extends Controller
 
     public function analytics()
     {
+        return Inertia::render('Dashboard/index', [
+
+
+        ]);
         // $user = User::find(Auth::id());
         $dashboard = $this->dashboard;
 

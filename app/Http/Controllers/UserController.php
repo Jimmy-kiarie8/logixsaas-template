@@ -2,103 +2,62 @@
 
 namespace App\Http\Controllers;
 
-
+use App\Http\Controllers\Base\BaseController;
 use App\Models\User;
 use Spatie\Permission\Models\Role;
 use App\Http\Requests\EditUserRequest;
 use App\Http\Requests\StoreUserRequest;
+use App\Models\Permission;
 use App\Services\DataTransformService;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
 
-class UserController extends Controller
+class UserController extends BaseController
 {
-    public function index()
+
+    public function __construct()
     {
+        // Set properties specific to IngredientController
+        $this->model = new User();
+        $this->json = 'users.json';
+        $this->title = 'User';
+        $this->route = 'users';
+        $this->upload = false;
 
-        $users = User::paginate(100);
 
-        $jsonFile = public_path('data/users.json'); // Get the full path to the JSON file
-
-
-        $trans = new DataTransformService;
-        $jsonData = $trans->data_transform($jsonFile);
-
-        $headers = [];
-        $headers[] = ['title' => 'Created At', 'key' => 'created_at'];
-
-        foreach ($jsonData as $item) {
-            $headers[] = [
-                'title' => $item['label'],
-                'key' => $item['model']
-            ];
-        }
-
-        $headers[] = ['title' => 'Actions', 'key' => 'actions'];
-
-        return Inertia::render('Views/index', [
-            'data' => $users,
-            'form_data' => $jsonData,
-            'headers' => $headers,
-            'title' => 'Users',
-            'modelRoute' => 'users',
-            'upload' => false
-        ]);
+        $this->actions = [
+            ['action_name' => 'Edit', 'icon' => 'mdi-pencil', 'color' => 'primary','route' => 'users'],
+            ['action_name' => 'Delete', 'icon' => 'mdi-delete', 'color' => 'error','route' => 'users'],
+            // Add more actions as needed
+        ];
     }
 
-    public function create(): View
-    {
-        $roles = Role::pluck('name', 'id');
+    // public function update(Request $request, $id)
+    // {
 
-        return view('tickets.users.create', compact('roles'));
-    }
+    //     $trans = new DataTransformService;
+    //     $dataValue = $trans->store($request->all());
 
-    public function store(Request $request)
-    {
+    //     DB::beginTransaction();
 
-        $data = $request->all();
-        $trans = new DataTransformService;
-        $dataValue = $trans->store($data);
+    //     try {
+    //         $model = $this->model->create($dataValue);
 
-        $dataValue['password'] = Str::random(8);
-        User::create($dataValue);
 
-        return redirect()->back()->with('message', 'User created');
-    }
+    //         DB::commit();
+    //         return redirect()->back()->with('message', 'Created');
+    //     } catch (\Throwable $th) {
+    //         DB::rollBack();
+    //         throw $th;
+    //     }
+    //     $user = User::find($id);
 
-    public function edit($id)
-    {
-        $driver_groups = User::find($id);
+    //     $role = Role::find($dataValue['role_id']);
 
-        $jsonFile = public_path('data/users.json'); // Get the full path to the JSON file
+    //     $user->assignRole($role);
+    // }
 
-        $trans = new DataTransformService;
-        return $trans->data_edit_transform($jsonFile, $driver_groups);
-    }
-
-    public function update(EditUserRequest $request, User $user)
-    {
-        if ($request->has('password')) {
-            $user->update(['password' => bcrypt($request->input('password'))]);
-        }
-
-        $user->update([
-            'name'     => $request->input('name'),
-            'email'    => $request->input('email'),
-            'password' => $request->has('password') ? bcrypt($request->input('password')) : '',
-        ]);
-
-        $user->syncRoles($request->input('role'));
-
-        return to_route('users.index');
-    }
-
-    public function destroy(User $user)
-    {
-        $user->delete();
-
-        return to_route('users.index');
-    }
 }

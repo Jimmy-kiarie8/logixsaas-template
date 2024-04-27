@@ -21,7 +21,7 @@
                             <span>View geofences</span>
                         </v-tooltip>
 
-                        <v-btn prepend-icon="mdi-plus-circle" variant="outlined" @click="openCreate()"
+                        <v-btn prepend-icon="mdi-plus-circle" variant="outlined" @click="openCreate('geocoder')"
                             color="info" v-if="modelRoute !== 'geofences'">
                             Add {{ title }}
                         </v-btn>
@@ -40,41 +40,6 @@
                     <v-text-field v-model="search" append-icon="mdi-magnify" label="Search" single-line
                         hide-details></v-text-field>
                 </template>
-                <!-- <template v-slot:item.actions="{ item }">
-                    <div class="actions">
-
-                        <v-tooltip location="bottom">
-                            <template v-slot:activator="{ props }">
-                                <v-btn icon v-bind="props" @click="openEdit(item.id)" variant="text" color="info">
-                                    <v-icon>
-                                        mdi-pencil
-                                    </v-icon>
-                                </v-btn>
-                            </template>
-                            <span>Edit</span>
-                        </v-tooltip>
-                        <v-tooltip location="bottom">
-                            <template v-slot:activator="{ props }">
-                                <v-btn icon v-bind="props" @click="deleteItem(item)" variant="text" color="red">
-                                    <v-icon>
-                                        mdi-delete
-                                    </v-icon>
-                                </v-btn>
-                            </template>
-                            <span>View geofences</span>
-                        </v-tooltip>
-                        <v-tooltip location="bottom" v-if="modelRoute === 'geofences'">
-                            <template v-slot:activator="{ props }">
-                                <v-btn icon v-bind="props" @click="geoFence(item.id)" variant="text" color="success">
-                                    <v-icon>
-                                        mdi-map-marker-check
-                                    </v-icon>
-                                </v-btn>
-                            </template>
-                            <span>View geofences</span>
-                        </v-tooltip>
-                    </div>
-                </template> -->
                 <template v-slot:item.actions="{ item }">
                     <div class="actions">
                         <v-tooltip location="bottom" v-for="(button, index) in actions" :key="index">
@@ -102,10 +67,7 @@
             </v-data-table>
         </div>
         <myEdit ref="editModal" :modelRoute="modelRoute" :title="title" />
-        <myCreate ref="createModal" :title="title" :modelRoute="modelRoute" :form_data="form_data" />
-        <myUpload ref="uploadModal" :modelRoute="modelRoute" :title="title" />
-        <myImage ref="imageModal" :modelRoute="modelRoute" :title="title" />
-
+        <myCreate ref="createModal" :title="title" :modelRoute="modelRoute" :permissions="permissions" />
 
         <v-dialog v-model="dialogDelete" max-width="400px">
             <v-card>
@@ -136,12 +98,10 @@ import { router } from '@inertiajs/vue3'
 import myCreate from './create.vue'
 import myEdit from './edit.vue'
 import axios from 'axios';
-import myUpload from './upload.vue';
-import myImage from './image-upload.vue';
 export default {
     props: {
         data: Object,
-        form_data: Object,
+        permissions: Object,
         company: Object,
         headers: Object,
         actions: Object,
@@ -150,7 +110,7 @@ export default {
         upload: Boolean
     },
     components: {
-        MainLayout, myCreate, myEdit, myUpload, myImage
+        MainLayout, myCreate, myEdit
     },
     data() {
         return {
@@ -190,7 +150,6 @@ export default {
             } else {
                 this.action_run(data, action.route)
             }
-
         },
 
         async action_run(data, route) {
@@ -205,6 +164,8 @@ export default {
                 this.loading = false;
             }
         },
+
+
         uploadImage(data) {
             this.$refs.imageModal.show(data)
         },

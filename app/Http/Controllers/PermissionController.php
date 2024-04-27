@@ -2,108 +2,68 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Base\BaseController;
 use App\Models\Permission;
+use App\Models\Role;
 use App\Services\DataTransformService;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
-class PermissionController extends Controller
+class PermissionController extends BaseController
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    public function __construct()
     {
-        $roles = Permission::paginate(100);
+        // Set properties specific to IngredientController
+        $this->model = new Permission();
+        $this->json = 'permissions.json';
+        $this->title = 'Permission';
+        $this->route = 'permissions';
+        $this->upload = false;
 
-        $jsonFile = public_path('data/permissions.json'); // Get the full path to the JSON file
 
-
-        $trans = new DataTransformService;
-        $jsonData = $trans->data_transform($jsonFile);
-
-        $headers = [];
-        $headers[] = ['title' => 'Created At', 'key' => 'created_at'];
-
-        foreach ($jsonData as $item) {
-            if ($item['table_display']) {
-                $headers[] = [
-                    'title' => $item['label'],
-                    'key' => $item['model']
-                ];
-            }
-        }
-
-        $headers[] = ['title' => 'Actions', 'key' => 'actions'];
-
-        return Inertia::render('Views/index', [
-            'data' => $roles,
-            'form_data' => $jsonData,
-            'headers' => $headers,
-            'title' => 'Permission',
-            'modelRoute' => 'permissions',
-            'upload' => false
-        ]);
+        $this->actions = [
+            ['action_name' => 'Edit', 'icon' => 'mdi-pencil', 'color' => 'primary', 'route' => 'permissions'],
+            ['action_name' => 'Delete', 'icon' => 'mdi-delete', 'color' => 'error', 'route' => 'permissions'],
+            // Add more actions as needed
+        ];
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        $data = $request->all();
-        $dataValue = [];
-
-        foreach ($data as $item) {
-            $model = $item['model'];
-            if ($item['type']  == 'radio') {
-                $value = ($item['value'] == 'Yes') ? true : false;
-            } else {
-                $value = $item['value'];
-            }
-
-            $dataValue[$model] = $value;
-        }
-
-        Permission::create($dataValue);
-
-        return redirect()->back()->with('message', 'Role created');
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit($id)
-    {
-
-        $insurance = Permission::find($id);
-
-        $jsonFile = public_path('data/permissions.json'); // Get the full path to the JSON file
-
-        $trans = new DataTransformService;
-        return $trans->data_edit_transform($jsonFile, $insurance);
-    }
     /**
      * Display the specified resource.
      */
     public function show(string $id)
     {
-        //
-    }
+        // Fetch all permissions
+        $permissions = Permission::all();
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
+        // Fetch the role
+        if ($id != 0) {
+            $role = Role::find($id);
+        }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        // Initialize an empty array to store grouped permissions
+        $groupedPermissions = [];
+
+        // Group permissions by a common prefix in their names
+        foreach ($permissions as $permission) {
+            // Extract the prefix from the permission name (e.g., "View", "Edit")
+            $prefix = explode(' ', $permission->name)[1];
+
+            // Check if the role has this permission
+            if ($id != 0) {
+                $hasPermission = $role->permissions->contains($permission);
+            } else {
+                $hasPermission = false;
+            }
+            // Add the permission to the corresponding group with the boolean flag
+            $groupedPermissions[$prefix][] = [
+                'id' => $permission->id,
+                'name' => $permission->name,
+                'has_permission' => $hasPermission,
+            ];
+        }
+
+        // Return the grouped permissions as JSON response
+        return response()->json($groupedPermissions);
     }
 }

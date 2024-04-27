@@ -1,49 +1,18 @@
-<!-- <script setup>
-import { VDatePicker } from 'vuetify/labs/VDatePicker'
-import { ref } from 'vue';
-
-defineProps({
-    form_data: Object,
-});
-
-const dialog = ref(false);
-
-</script> -->
 <script setup>
 import { defineProps, defineEmits } from 'vue';
+import { VNumberInput } from 'vuetify/labs/VNumberInput'
 
 const props = defineProps({
     form_data: Object,
+    ingredients: Array
 });
 
 const emit = defineEmits(['update:plots']);
+const onChange = (item) => {
 
-const onProjectChange = (item) => {
-    if (item.model == "project_id") {
-        fetchPlotsForProject(item.value);
-    }
 };
 
 
-// Function to fetch plots
-const fetchPlotsForProject = async (projectId) => {
-    try {
-        const response = await axios.get(`/plots/${projectId}`);
-        // Assuming the response contains an array of plots
-        const plots = response.data;
-
-        // Find the plot item in the form_data
-        const plotItem = props.form_data.find(item => item.model === 'plot_id');
-
-        // If the plot item exists, update its items array
-        if (plotItem) {
-            plotItem.items = plots;
-        }
-
-    } catch (error) {
-        console.error('Failed to fetch plots:', error);
-    }
-};
 </script>
 
 
@@ -54,8 +23,13 @@ const fetchPlotsForProject = async (projectId) => {
                 <div>
                     <v-text-field clearable :label="item.label" variant="outlined" v-model="item.value"
                         v-if="item.type == 'text'" type="text"></v-text-field>
-                    <v-text-field clearable :label="item.label" variant="outlined" v-model="item.value"
-                        v-if="item.type == 'number'" type="number"></v-text-field>
+                    <!-- <v-text-field clearable :label="item.label" variant="outlined" v-model="item.value"
+                        v-if="item.type == 'number'" type="number"></v-text-field> -->
+
+
+                    <v-number-input :label="item.label" :min="1" v-model="item.value" variant="outlined" control-variant="split" v-if="item.type == 'number'"></v-number-input>
+
+
                     <v-text-field clearable :label="item.label" variant="outlined" v-model="item.value"
                         v-if="item.type == 'date'" type="date"></v-text-field>
                     <v-text-field clearable :label="item.label" variant="outlined" v-model="item.value"
@@ -71,13 +45,16 @@ const fetchPlotsForProject = async (projectId) => {
                             :value="option"></v-radio>
                     </v-radio-group>
 
-                    <v-select clearable chips :label="item.label" :items="item.items" variant="outlined"
+                    <v-autocomplete clearable chips :label="item.label" :items="item.items" variant="outlined"
                         v-if="item.type == 'select'" item-title="label" item-value="value" v-model="item.value"
-                        @update:modelValue="onProjectChange(item)" :multiple="item.multiple"
-                        :return-object="false"></v-select>
+                        @update:modelValue="onChange(item)" :multiple="item.multiple"
+                        :return-object="false"></v-autocomplete>
+
+                    <v-combobox clearable chips :multiple="item.multiple" :label="item.label" :items="item.items"
+                        variant="outlined" v-if="item.type == 'combobox'" :return-object="false"
+                        v-model="item.value"></v-combobox>
                 </div>
             </v-col>
         </template>
     </v-row>
 </template>
-

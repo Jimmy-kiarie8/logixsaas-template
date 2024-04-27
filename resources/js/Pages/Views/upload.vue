@@ -1,7 +1,7 @@
 <template>
     <v-row justify="center">
         <v-dialog persistent v-model="dialog" width="800">
-            <v-card title="Upload products" subtitle="csv/xlsx">
+            <v-card :title="`Upload ${title}`" subtitle="csv/xlsx">
                 <v-card-text>
                     <v-file-input clearable label="File input" variant="solo-filled" ref="fileUpload"></v-file-input>
                 </v-card-text>
@@ -27,6 +27,7 @@
 export default {
     props: {
         modelRoute: String,
+        title: String,
     },
     components: {
     },

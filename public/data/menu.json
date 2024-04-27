@@ -1,0 +1,52 @@
+[
+    {
+        "text": "Dashboard",
+        "link": "/",
+        "icon": "mdi-view-dashboard",
+        "hasSub": false,
+        "subMenu": []
+    },
+    {
+        "text": "Clients",
+        "link": "/clients",
+        "icon": "mdi-card-account-details",
+        "hasSub": false,
+        "subMenu": []
+    },
+    {
+        "text": "User",
+        "link": "#",
+        "icon": "mdi-account-circle",
+        "subMenu": [
+            {
+                "text": "Users",
+                "link": "/users",
+                "icon": "mdi-badge-account-alert-outline",
+                "hasSub": false,
+                "subMenu": []
+            },
+            {
+                "text": "Roles",
+                "link": "/roles",
+                "icon": "mdi-book",
+                "hasSub": false,
+                "subMenu": []
+            }
+        ],
+        "hasSub": true
+    },
+    {
+        "text": "Reports",
+        "link": "/reports",
+        "icon": "mdi-chart-areaspline",
+        "hasSub": false,
+        "subMenu": []
+    },
+    {
+        "text": "Setting",
+        "link": "/settings",
+        "icon": "mdi-cog",
+        "hasSub": false,
+        "subMenu": []
+    }
+]

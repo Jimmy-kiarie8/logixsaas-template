@@ -3,7 +3,7 @@
         <v-dialog persistent v-model="dialog" width="800">
 
             <v-divider></v-divider>
-            <v-card>
+            <v-card :loading="loading">
                 <v-card-title class="text-h5">
                     Edit {{ title }}
                 </v-card-title>
@@ -11,15 +11,25 @@
                     <myForm :form_data="form_data" />
                 </v-card-text>
                 <v-card-actions>
-                    <v-btn variant="outlined" color="red" @click="close">
-                        <v-icon>mdi-close-box-multiple</v-icon> Close
+                    <v-btn variant="outlined" color="error" @click="close">
+                        Close
                     </v-btn>
                     <v-spacer></v-spacer>
-                    <v-btn variant="outlined" color="info" @click="submit">
-                        <v-icon>mdi-checkbox-marked</v-icon> Submit
+                    <v-btn variant="outlined" color="primary" @click="submit" :loading="loading">
+                        Submit
                     </v-btn>
                 </v-card-actions>
             </v-card>
+
+            <v-snackbar v-model="snackbar">
+                {{ text }}
+
+                <template v-slot:actions>
+                    <v-btn color="pink" variant="text" @click="snackbar = false">
+                        Close
+                    </v-btn>
+                </template>
+            </v-snackbar>
         </v-dialog>
     </v-row>
 </template>
@@ -36,8 +46,11 @@ export default {
     },
     data() {
         return {
+            loading: false,
             dialog: false,
             form_data: {},
+            snackbar: false,
+            text: 'Created',
             id: null
         }
     },
@@ -45,14 +58,27 @@ export default {
     },
     methods: {
         submit() {
+            this.loading = true
             console.log(this.form_data);
             this.$inertia.patch(`/${this.modelRoute}/${this.id}`, this.form_data, {
-                onError: () => { },
+                onError: () => {
+                    this.loading = false
+                    this.text = 'Something went wrong';
+                    this.snackbar = true
+                },
                 onSuccess: () => {
+                    this.text = 'Updated';
+
+                    this.loading = false
+                    this.snackbar = true
+                    // this.$refs.snackBarModal.show('Created')
                     console.log('success');
-                    // this.$refs.snackBarModal.show('Updated')
                 }
             })
+
+            setTimeout(() => {
+                this.loading = false
+            }, 5000);
         },
         close() {
             this.dialog = false
@@ -60,13 +86,16 @@ export default {
 
         show(data) {
             this.id = data
+            this.loading = true
             this.dialog = true
             axios.get(`${this.modelRoute}/${data}/edit`).then((res) => {
+                this.loading = false
 
                 console.log("🚀 ~ axios.get ~ res:", res)
                 this.form_data = res.data;
             }).catch((error) => {
                 console.log("🚀 ~ axios.get ~ error:", error)
+                this.loading = false
 
             })
         },

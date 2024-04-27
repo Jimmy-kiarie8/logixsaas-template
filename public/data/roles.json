@@ -1,0 +1,22 @@
+[
+    {
+        "label": "Name",
+        "value": "",
+        "model": "name",
+        "type": "text",
+        "display": true,
+        "table_display": true,
+        "col": 12,
+        "items": []
+    },
+    {
+        "label": "Guard",
+        "value": "User",
+        "model": "email",
+        "type": "select",
+        "display": false,
+        "table_display": false,
+        "col": 6,
+        "items": ["User", "Client"]
+    }
+]

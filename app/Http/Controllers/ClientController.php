@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Base\BaseController;
 use App\Http\Requests\StoreClientRequest;
 use App\Http\Requests\UpdateClientRequest;
 use App\Imports\LeadImport;
@@ -12,103 +13,19 @@ use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Maatwebsite\Excel\Facades\Excel;
 
-class ClientController extends Controller
+class ClientController extends BaseController
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    public function __construct()
     {
-        $clients = Client::paginate(100);
+        // parent::__construct(); // Call parent constructor to initialize properties
 
-        $jsonFile = public_path('data/clients.json'); // Get the full path to the JSON file
+        // Set properties specific to IngredientController
+        $this->model = new Client();
+        $this->json = 'clients.json';
+        $this->title = 'Client';
+        $this->route = 'clients';
+        $this->upload = false;
 
-        $trans = new DataTransformService;
-        $jsonData = $trans->data_transform($jsonFile);
-
-
-        $headers = [];
-        $headers[] = ['title' => 'Created At', 'key' => 'created_at'];
-
-
-        foreach ($jsonData as $item) {
-            if ($item['table_display']) {
-                $headers[] = [
-                    'title' => $item['label'],
-                    'key' => $item['model']
-                ];
-            }
-        }
-        $headers[] = ['title' => 'Actions', 'key' => 'actions'];
-
-
-        return Inertia::render('Views/index', [
-            'data' => $clients,
-            'form_data' => $jsonData,
-            'headers' => $headers,
-            'title' => 'Clients',
-            'modelRoute' => 'clients',
-        ]);
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(StoreClientRequest $request)
-    {
-        $data = $request->all();
-        $dataValue = [];
-
-        foreach ($data as $item) {
-            $model = $item['model'];
-            if ($item['type']  == 'radio') {
-                $value = ($item['value'] == 'Yes') ? true : false;
-            } else {
-                $value = $item['value'];
-            }
-
-            $dataValue[$model] = $value;
-        }
-        Client::create($dataValue);
-
-        return redirect()->back()->with('message', 'Contact created');
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(Client $client)
-    {
-        //
-    }
-
-    public function edit($id)
-    {
-        $driver_groups = Client::find($id);
-
-        $jsonFile = public_path('data/clients.json'); // Get the full path to the JSON file
-
-        $trans = new DataTransformService;
-        return $trans->data_edit_transform($jsonFile, $driver_groups);
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateClientRequest $request, $id)
-    {
-
-        Client::find($id)->update($request->all());
-
-        return redirect()->back()->with('message', 'Contact updated');
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Client $client)
-    {
-        //
     }
 
     /**

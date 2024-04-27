@@ -18,9 +18,8 @@
                 </Link>
 
                 <v-list-group :value="link.text" v-else>
-                    {{ link.text }}
                     <template v-slot:activator="{ props }">
-                        <v-list-item v-bind="props" prepend-icon="mdi-cart" :title="link.text"></v-list-item>
+                        <v-list-item v-bind="props" :prepend-icon="link.icon" :title="link.text"></v-list-item>
                     </template>
                     <Link :key="i" v-for="(item, i) in link.subMenu" :href="item.link">
                     <v-list-item :title="item.text" :prepend-icon="item.icon" :value="i"></v-list-item>
@@ -63,6 +62,7 @@
 <script>
 
 import { Link } from '@inertiajs/vue3';
+import axios from 'axios';
 
 export default {
     components: {
@@ -79,58 +79,7 @@ export default {
             drawer: true,
             snackbar: false,
             text: '',
-            links: [
-                {
-                    text: 'Dashboard',
-                    link: '/',
-                    icon: 'mdi-view-dashboard',
-                    hasSub: false,
-                    subMenu: []
-                },
-                {
-                    text: 'Users',
-                    link: '/users',
-                    icon: 'mdi-badge-account-alert-outline',
-                    hasSub: false,
-                    subMenu: []
-                },
-                {
-                    text: 'Clients',
-                    link: '/clients',
-                    icon: 'mdi-card-account-details',
-                    hasSub: false,
-                    subMenu: []
-                },
-                {
-                    text: 'Sales Manager',
-                    link: '#',
-                    icon: 'mdi-bag-checked',
-                    subMenu: [
-                        {
-                            text: 'Invoices',
-                            link: '/invoices',
-                            icon: 'mdi-book',
-                            hasSub: false,
-                            subMenu: []
-                        }
-                    ],
-                    hasSub: true
-                },
-                {
-                    text: 'Reports',
-                    link: '/reports',
-                    icon: 'mdi-chart-areaspline',
-                    hasSub: false,
-                    subMenu: []
-                },
-                {
-                    text: 'Setting',
-                    link: '/settings',
-                    icon: 'mdi-cog',
-                    hasSub: false,
-                    subMenu: []
-                }
-            ]
+            links: []
         }
     },
 
@@ -142,6 +91,16 @@ export default {
         changeTheme(data) {
             console.log("🚀 ~ changeTheme ~ data:", data)
             this.$vuetify.theme.global.name = this.$vuetify.theme.global.current.dark ? 'light' : 'dark'
+        },
+
+        async loadJsonData() {
+        try {
+            const response = await axios.get('/data/menu.json');
+            console.log("🚀 ~ loadJsonData ~ response:", response)
+            this.links = response.data;
+        } catch (error) {
+            console.error('Error loading JSON data:', error);
+        }
         }
     },
     computed: {
@@ -153,7 +112,10 @@ export default {
                 return "/" + this.modelRoute == route
             }
         }
-    }
+    },
+  mounted() {
+    this.loadJsonData();
+  },
 };
 </script>
 
